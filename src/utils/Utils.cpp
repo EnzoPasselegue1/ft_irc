@@ -105,7 +105,7 @@ std::string intToString(int num)
     ss << num;
     return ss.str();
 }
-// stringToInt: Converts a string to an integer.
+// stringToInt: Converts a string to an integer. 
 int stringToInt(const std::string& str)
 {
     return std::atoi(str.c_str());
