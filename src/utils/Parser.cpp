@@ -223,6 +223,38 @@ bool modeNeedsParam(char mode, bool adding)
 	    default:
 	        return false;
 	}
+}
 
+/* ========================================================================== */
+/*                    PARSING DU PRÉFIXE                                      */
+/* ========================================================================== */
+
+// Extracts the nickname from a prefix.
+std::string getNickFromPrefix(const std::string& prefix)
+{
+	size_t exclamPos = prefix.find('!');
+	if (exclamPos != std::string::npos)
+	    return prefix.substr(0, exclamPos);
+	return prefix;
+}
+
+// Extracts the username from a prefix.
+std::string getUserFromPrefix(const std::string& prefix)
+{
+	size_t exclamPos = prefix.find('!');
+	size_t atPos = prefix.find('@');
+
+	if (exclamPos != std::string::npos && atPos != std::string::npos)
+	    return prefix.substr(exclamPos + 1, atPos - exclamPos - 1);
+	return "";
+}
+
+// Extracts the host from a prefix.
+std::string getHostFromPrefix(const std::string& prefix)
+{
+	size_t atPos = prefix.find('@');
+	if (atPos != std::string::npos)
+	    return prefix.substr(atPos + 1);
+	return "";
 }
 }
