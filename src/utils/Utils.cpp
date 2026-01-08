@@ -2,7 +2,6 @@
 
 namespace Utils
 {
-
 /* ========================================================================== */
 /*                              CHAIN HANDLING                                */
 /* ========================================================================== */
@@ -95,19 +94,90 @@ std::string replaceAll(const std::string& str, const std::string& from, const st
 	return result;
 }
 
+/* ========================================================================== */
+/*                              TYPES CONVERSION                              */
+/* ========================================================================== */
+
+// stringToInt: Converts a string to an integer.
+std::string intToString(int num)
+{
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
+}
+// stringToInt: Converts a string to an integer.
+int stringToInt(const std::string& str)
+{
+    return std::atoi(str.c_str());
+}
+
+// isNumber: Checks if a string represents a valid number (only digits).
+bool isNumber(const std::string& str)
+{
+    for (size_t i = 0; i < str.length(); ++i)
+    {
+        if (!std::isdigit(str[i]))
+            return false;
+    }
+    return true;
+}
+
+// isPositiveNumber: Checks if a string represents a positive number.
+bool isPositiveNumber(const std::string& str)
+{
+    if (!isNumber(str))
+        return false;
+    return stringToInt(str) > 0;
+}
+
+/* ========================================================================== */
+/*                              IRC FORMAT                                    */
+/* ========================================================================== */
+
+// formatServerReply: Formats a server reply message according to IRC protocol.
+std::string formatServerReply(const std::string& serverName,
+							  const std::string& code,
+							  const std::string& target,
+							  const std::string& message)
+{
+	 return ":" + serverName + " " + code + " " + target + " :" + message;
+}
+
+// formatUserMessage: Formats a user message according to IRC protocol.
+std::string formatUserMessage(const std::string& prefix,
+							  const std::string& command,
+							  const std::string& params)
+{
+	 return ":" + prefix + " " + command + " " + params;
+}
+
+/* ========================================================================== */
+/*                    UTILITAIRES DIVERS                                      */
+/* ========================================================================== */
 
 
+// getCurrentTimestamp: Returns the current timestamp as a formatted string.
+std::string getCurrentTimestamp()
+{
+	time_t now = std::time(NULL);
+	char buffer[80];
+	struct tm* timeinfo = std::localtime(&now);
+	std::strftime(buffer, sizeof(buffer), "%a %b %d %Y at %H:%M:%S", timeinfo);
+	return std::string(buffer);
+}
 
+// getUnixTimestamp: Returns the current Unix timestamp as a long integer.
+long getUnixTimestamp()
+{
+	return static_cast<long>(std::time(NULL));
+}
 
+// timestampToString: Converts a long integer timestamp to its string representation.
+std::string timestampToString(long timestamp)
+{
+	std::stringstream ss;
+	ss << timestamp;
+	return ss.str();
+}
 
-
-
-
-
-
-
-
-
-
-
-} // namespace Utils
+}
