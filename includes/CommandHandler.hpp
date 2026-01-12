@@ -31,6 +31,8 @@ class CommandHandler
         void handleNick(Client* client, const ParsedCommand& cmd);
         void checkRegistration(Client* client);
         void handleUser(Client* client, const ParsedCommand& cmd);
+        void handleJoin(Client* client, const ParsedCommand& cmd);
+        void joinSingleChannel(Client* client, const std::string& channelName, const std::string& key);
 
         ParsedCommand parseCommand(const std::string& rawCommand);
         void sendError(Client* client, const std::string& errorCode, const std::string& target, const std::string& message);
