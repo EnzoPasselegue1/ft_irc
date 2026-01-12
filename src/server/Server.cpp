@@ -9,7 +9,7 @@ Server::Server(int port, const std::string& password)
 	  _running(false),
 	  _cmdHandler(NULL)
 {
-	   _creationDate = Utils::getCurrentTimestamp();
+	   _creationDate = std::time(NULL);
 
 	   _cmdHandler = new CommandHandler(*this);
 

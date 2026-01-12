@@ -28,9 +28,6 @@ class Server
         std::vector<struct pollfd>      _pollFds;   // list the descripteur for poll
 
         CommandHandler*                 _cmdHandler;
-
-		int                             _serverSocket;  // Principal socket listener
-
         /* ================================================================== */
         /*                CONSTRUCTEURS INTERDICTION                          */
         /* ================================================================== */
