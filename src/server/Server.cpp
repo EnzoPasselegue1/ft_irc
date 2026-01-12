@@ -229,3 +229,46 @@ bool Server::isNicknameInUse(const std::string& nickname)
 /*                       CHANNEL GESTION                                      */
 /* ========================================================================== */
 
+Channel* Server::getOrCreatChannel(const std::string& name)
+{
+
+	std::string lowerName = Utils::toLower(name);
+	std::map<std::string, Channel*>::iterator it = _channels.find(lowerName);
+
+	if (it != _channels.end())
+	    return it->second;
+
+	// if doesn't exit, creat channel
+	Channel* channel = new Channel(name);
+	_channels[lowerName] = channel;
+	return channel;
+}
+
+Channel* Server::getChannel(const std::string& name)
+{
+    std::string lowerName = Utils::toLower(name);
+    std::map<std::string, Channel*>::iterator it = _channels.find(lowerName);
+
+    if (it != _channels.end())
+        return it->second;
+    return NULL;
+}
+
+Channel* Server::RemoveChannel(const std::string& name)
+{
+    std::string lowerName = Utils::toLower(name);
+    std::map<std::string, Channel*>::iterator it = _channels.find(lowerName);
+
+    if (it != _channels.end())
+    {
+        delete it->second;
+        _channels.erase(it);
+    }
+    return NULL;
+}
+
+
+/* ========================================================================== */
+/*                       COIMMUNICATION                                       */
+/* ========================================================================== */
+

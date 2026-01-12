@@ -14,9 +14,6 @@ class CommandHandler;
 class Server
 {
     private:
-        /* ================================================================== */
-        /*                    ATTRIBUTS PRIVATE                                */
-        /* ================================================================== */
         int                             _port;
         std::string                     _password;
         std::string                     _serverName;
@@ -51,5 +48,8 @@ class Server
         void Server::disconnectClient(int fd);
         Client* Server::getClientByNickname(const std::string& nickname);
         bool Server::isNicknameInUse(const std::string& nickname);
+        Channel* Server::getOrCreatChannel(const std::string& name);
+        Channel* Server::getChannel(const std::string& name);
+        Channel* Server::RemoveChannel(const std::string& name);
         
 };
