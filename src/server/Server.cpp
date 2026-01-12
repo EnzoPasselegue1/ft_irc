@@ -13,17 +13,17 @@ Server::Server(int port, const std::string& password)
 
 	   _cmdHandler = new CommandHandler(*this);
 
-	   _pollFds.reserve(MAX_CLIENTS + 1);  // +1 pour le socket serveur
+	   _pollFds.reserve(MAX_CLIENTS + 1);  // +1 for socket server
 }
 
-// Destructeur
+// Destructor
 Server::~Server()
 {
 	   for (std::map<int, Client*>::iterator it = _clients.begin();
 	        it != _clients.end(); ++it)
 	   {
-	       close(it->first);      // Ferme le socket
-	       delete it->second;     // Supprime l'objet Client
+	       close(it->first);      // close the socket
+	       delete it->second;     // delete client object
 	   }
 	   _clients.clear();
 
@@ -41,17 +41,17 @@ Server::~Server()
 }
 
 /* ========================================================================== */
-/*                       INITIALISATION DU SERVEUR                            */
+/*                       INITIALISATION SERVEUR                               */
 /* ========================================================================== */
 
 /*
-** Étapes :
-** 1. Créer le socket (socket())
-** 2. Configurer les options (setsockopt())
-** 3. Mettre en mode non-bloquant (fcntl())
-** 4. Lier au port (bind())
-** 5. Mettre en écoute (listen())
-** 6. Ajouter à poll()
+** Steps:
+** 1. Create the socket (socket())
+** 2. Configure options (setsockopt())
+** 3. Set to non-blocking mode (fcntl())
+** 4. Bind to port (bind())
+** 5. Set to listen mode (listen())
+** 6. Add to poll()
 */
 bool Server::init()
 {
@@ -103,14 +103,17 @@ bool Server::init()
 }
 
 /* ========================================================================== */
-/*                       BOUCLE PRINCIPALE                                    */
+/*                       PRINCIPALE  WHILE                                    */
 /* ========================================================================== */
 
-// 1. Appeler poll() avec un timeout (ex: 1000ms)
-// 2. Parcourir tous les fd surveillés
-// 3. Si c'est le socket serveur, accepter nouvelle connexion
-// 4. Si c'est un client
-// 5. Nettoyer les clients marqués pour déconnexion
+// 1. Call poll() with a timeout (e.g., 1000ms)
+// 2. Loop through all monitored fds
+// 3. If it's the server socket, accept new connection
+// 4. If it's a client
+//    a. Check POLLERR/POLLHUP/POLLNVAL -> mark for removal
+//    b. If POLLIN (data to read) -> read and process commands
+//    c. If POLLOUT (ready to write) -> send pending data
+// 5. Clean up clients marked for disconnection
 void Server::run()
 {
 	_running = true;
@@ -121,7 +124,7 @@ void Server::run()
 
 	    if (pollResult == -1)
 	    {
-	        if (errno == EINTR)  // Interrompu par un signal
+	        if (errno == EINTR) // Interrupted
 	            continue;
 	        std::cerr << "Error: poll() failed" << std::endl;
 	        break;
@@ -132,7 +135,7 @@ void Server::run()
 
 	    for (size_t i = 0; i < _pollFds.size(); ++i)
 	    {
-	        // Aucun événement sur ce fd
+	        // No evant on this fd
 	        if (_pollFds[i].revents == 0)
 	            continue;
 
@@ -145,17 +148,17 @@ void Server::run()
 	        {
 	            int clientFd = _pollFds[i].fd;
 
-	            // Erreur ou déconnexion
+	            // Error or deconnexion
 	            if (_pollFds[i].revents & (POLLERR | POLLHUP | POLLNVAL))
 	            {
 	                disconnectClient(clientFd);
 	                continue;
 	            }
-	            // Données à lire
+	            // Data to read 
 	            if (_pollFds[i].revents & POLLIN)
 	                handleClientData(clientFd);
 
-	            // Prêt à écrire (si des données sont en attente)
+	            // Ready to write
 	            if (_pollFds[i].revents & POLLOUT)
 	                flushClientBuffer(clientFd);
 	        }
@@ -168,4 +171,61 @@ void Server::stop()
 {
     _running = false;
 }
+
+// DisconnectClient
+void Server::disconnectClient(int fd)
+{
+    std::map<int, Client*>::iterator it = _clients.find(fd);
+    
+    if (it == _clients.end())
+	    return;
+
+	Client* client = it->second;
+
+	const std::set<std::string>& channels = client->getChannels();
+	for (std::set<std::string>::const_iterator chanIt = channels.begin();
+	     chanIt != channels.end(); ++chanIt)
+	{
+	    Channel* channel = getChannel(*chanIt);
+	    if (channel)
+	    {
+	        // Option : Send message QUIT to other
+	        channel->removeMember(client);
+	        if (channel->isEmpty())
+	            removeChannel(*chanIt);
+	    }
+	}
+
+	removeFromPoll(fd);
+
+	close(fd);
+
+	delete client;
+	_clients.erase(it);
+
+	std::cout << "Client disconnected (fd: " << fd << ")" << std::endl;
+}
+
+Client* Server::getClientByNickname(const std::string& nickname)
+{
+
+	std::string lowerNick = Utils::toLower(nickname);
+	for (std::map<int, Client*>::iterator it = _clients.begin();
+	     it != _clients.end(); ++it)
+	{
+	    if (Utils::toLower(it->second->getNickname()) == lowerNick)
+	        return it->second;
+	}
+	return NULL;
+}
+
+// Verify if the nickname is already used
+bool Server::isNicknameInUse(const std::string& nickname)
+{
+	return (getClientByNickname(nickname) != NULL);
+}
+
+/* ========================================================================== */
+/*                       CHANNEL GESTION                                      */
+/* ========================================================================== */
 

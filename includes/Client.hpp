@@ -15,13 +15,13 @@ private:
 	// Identifiant socket
 	int         _fd;
 	
-	// Informations d'identification
+	// identification information
 	std::string _nickname;
 	std::string _username;
 	std::string _realname;
 	std::string _hostname;
 	
-	// État
+	// stat
 	bool        _passwordProvided;
 	bool        _registered;
 	bool        _shouldDisconnect;
@@ -33,7 +33,7 @@ private:
 	std::string _outputBuffer;
 
 	/* ================================================================== */
-	/*                CONSTRUCTEURS INTERDITS                             */
+	/*                CONSTRUCTEURS INTERDITION                           */
 	/* ================================================================== */
 	Client();
 	Client(const Client& other);
@@ -68,7 +68,7 @@ public:
     bool isRegistered() const;
 
     /* ========================================================================== */
-    /*                    GESTION DES CHANNELS                                    */
+    /*                    GESTION OF  CHANNELS                                    */
     /* ========================================================================== */
     void joinChannel(const std::string& channelName);
     void leaveChannel(const std::string& channelName);
@@ -76,7 +76,7 @@ public:
     const std::set<std::string>& getChannels() const;
 
     /* ========================================================================== */
-    /*                    GESTION DES BUFFERS                                     */
+    /*                    GESTION OF  BUFFERS                                     */
     /* ========================================================================== */
     void appendToInputBuffer(const std::string& data);
     std::string& getInputBuffer();

@@ -6,7 +6,7 @@
 # include <map>
 # include <poll.h>
 
-// Forward declarations pour éviter les inclusions circulaires
+// Forward declarations for circular inclusion
 class Client;
 class Channel;
 class CommandHandler;
@@ -15,7 +15,7 @@ class Server
 {
     private:
         /* ================================================================== */
-        /*                    ATTRIBUTS PRIVÉS                                */
+        /*                    ATTRIBUTS PRIVATE                                */
         /* ================================================================== */
         int                             _port;
         std::string                     _password;
@@ -25,17 +25,17 @@ class Server
         int                             _serverSocket;
         bool                            _running;
 
-        std::map<int, Client*>          _clients;   // Map des clients connectés (clé: fd)
-        std::map<std::string, Channel*>  _channels;  // Map des channels (clé: nom du channel)
+        std::map<int, Client*>          _clients;   // Map of clients connected (key: fd)
+        std::map<std::string, Channel*>  _channels;  // map of channel (clé: nom du channel)
 
-        std::vector<struct pollfd>      _pollFds;   // Liste des descripteurs pour poll()
+        std::vector<struct pollfd>      _pollFds;   // list the descripteur for poll
 
         CommandHandler*                 _cmdHandler;
 
-		int                             _serverSocket;  // Socket d'écoute principal
+		int                             _serverSocket;  // Principal socket listener
 
         /* ================================================================== */
-        /*                CONSTRUCTEURS INTERDITS                             */
+        /*                CONSTRUCTEURS INTERDICTION                          */
         /* ================================================================== */
         Server();
         Server(const Server& other);
@@ -47,5 +47,9 @@ class Server
 
         bool Server::init();
         void Server::run();
+        void Server::stop();
+        void Server::disconnectClient(int fd);
+        Client* Server::getClientByNickname(const std::string& nickname);
+        bool Server::isNicknameInUse(const std::string& nickname);
         
 };

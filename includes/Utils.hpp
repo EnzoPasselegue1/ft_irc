@@ -42,7 +42,7 @@ namespace Utils
                                     const std::string& params);
 
 /* ========================================================================== */
-/*                    UTILITAIRES DIVERS                                      */
+/*                               OTHER UTILS                                  */
 /* ========================================================================== */
 
     std::string getCurrentTimestamp();

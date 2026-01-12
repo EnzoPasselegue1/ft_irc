@@ -16,7 +16,7 @@ std::string extractTrailing(const std::string& message);
 
 
 /* ========================================================================== */
-/*                    PARSING DES LISTES                                      */
+/*                    PARSING LISTES                                          */
 /* ========================================================================== */
 std::vector<std::string> parseChannelList(const std::string& channelList);
 std::vector<std::string> parseKeyList(const std::string& keyList);
