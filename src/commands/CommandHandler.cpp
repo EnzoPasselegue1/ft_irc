@@ -46,10 +46,10 @@ void CommandHandler::handleCommand(Client* client, const std::string& rawCommand
 	//    handleTopic(client, cmd);
 	//else if (upperCmd == "MODE")
 	//    handleMode(client, cmd);
-	//else if (upperCmd == "QUIT")
-	//    handleQuit(client, cmd);
-	//else if (upperCmd == "PING")
-	//    handlePing(client, cmd);
+	else if (upperCmd == "QUIT")
+	    handleQuit(client, cmd);
+	else if (upperCmd == "PING")
+	    handlePing(client, cmd);
 	//else if (upperCmd == "CAP")
 	//    ; // Ignorer CAP (utilisé par certains clients modernes)
 	//else if (upperCmd == "WHO" || upperCmd == "WHOIS")
