@@ -52,6 +52,11 @@ class CommandHandler
 
         void handleTopic(Client* client, const ParsedCommand& cmd);
         void handleKick(Client* client, const ParsedCommand& cmd);
+        void handleInvite(Client* client, const ParsedCommand& cmd);
+        void handleMode(Client* client, const ParsedCommand& cmd);
+        void applyModeChanges(Client* client, Channel* channel,
+                              const std::string& modeString,
+                              const std::vector<std::string>& modeParams);
 
 /* ========================================================================== */
 /*                         UTILS                                              */

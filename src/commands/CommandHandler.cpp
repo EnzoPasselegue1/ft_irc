@@ -45,12 +45,12 @@ void CommandHandler::handleCommand(Client* client, const std::string& rawCommand
 	    handlePrivmsg(client, cmd);
 	else if (upperCmd == "KICK")
 	    handleKick(client, cmd);
-	//else if (upperCmd == "INVITE")
-	//    handleInvite(client, cmd);
+	else if (upperCmd == "INVITE")
+	    handleInvite(client, cmd);
 	else if (upperCmd == "TOPIC")
 	    handleTopic(client, cmd);
-	//else if (upperCmd == "MODE")
-	//    handleMode(client, cmd);
+	else if (upperCmd == "MODE")
+	    handleMode(client, cmd);
 	else if (upperCmd == "QUIT")
 	    handleQuit(client, cmd);
 	else if (upperCmd == "PING")
