@@ -27,11 +27,18 @@ class CommandHandler
         CommandHandler(Server& server);
         ~CommandHandler();
 
+/* ========================================================================== */
+/*                         CONNEXION                                          */
+/* ========================================================================== */
+
         void handleCommand(Client* client, const std::string& rawCommand);
         void handleNick(Client* client, const ParsedCommand& cmd);
         void checkRegistration(Client* client);
         void handleUser(Client* client, const ParsedCommand& cmd);
 
+/* ========================================================================== */
+/*                         BASICS COMMANDS                                   */
+/* ========================================================================== */
         void handlePing(Client* client, const ParsedCommand& cmd);
         void handleQuit(Client* client, const ParsedCommand& cmd);
         void handleJoin(Client* client, const ParsedCommand& cmd);
@@ -39,8 +46,16 @@ class CommandHandler
         void handlePart(Client* client, const ParsedCommand& cmd);
         void handlePrivmsg(Client* client, const ParsedCommand& cmd);
 
+/* ========================================================================== */
+/*                         OPERATOR COMMANDS                                  */
+/* ========================================================================== */
+
         void handleTopic(Client* client, const ParsedCommand& cmd);
         void handleKick(Client* client, const ParsedCommand& cmd);
+
+/* ========================================================================== */
+/*                         UTILS                                              */
+/* ========================================================================== */
 
         ParsedCommand parseCommand(const std::string& rawCommand);
         void sendError(Client* client, const std::string& errorCode, const std::string& target, const std::string& message);
