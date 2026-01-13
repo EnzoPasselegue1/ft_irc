@@ -407,7 +407,8 @@ void Server::processCommand(Client* client, const std::string& command)
 
 void Server::flushClientBuffer(int fd)
 {
-        std::map<int, Client*>::iterator it = _clients.find(fd);
+    std::map<int, Client*>::iterator it = _clients.find(fd);
+    
     if (it == _clients.end())
         return ;
     Client* client = it->second;

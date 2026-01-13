@@ -36,8 +36,8 @@ void CommandHandler::handleCommand(Client* client, const std::string& rawCommand
 	    handleJoin(client, cmd);
 	else if (upperCmd == "PART")
 	    handlePart(client, cmd);
-	//else if (upperCmd == "PRIVMSG")
-	//    handlePrivmsg(client, cmd);
+	else if (upperCmd == "PRIVMSG")
+	    handlePrivmsg(client, cmd);
 	//else if (upperCmd == "KICK")
 	//    handleKick(client, cmd);
 	//else if (upperCmd == "INVITE")
