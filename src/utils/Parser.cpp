@@ -83,7 +83,7 @@ std::string extractTrailing(const std::string& message)
 }
 
 /* ========================================================================== */
-/*                    PARSING DES LISTES                                      */
+/*                    PARSING LISTS                                      */
 /* ========================================================================== */
 
 // Splits a comma-separated list of channels into a vector of strings.
@@ -209,7 +209,7 @@ bool isValidMode(char mode)
 	        mode == 'o' || mode == 'l');
 }
 
-// Determines if a mode change requires a parameter.
+// Choose if a mode change requires a parameter.
 bool modeNeedsParam(char mode, bool adding)
 {
 	switch (mode)
@@ -226,7 +226,7 @@ bool modeNeedsParam(char mode, bool adding)
 }
 
 /* ========================================================================== */
-/*                       PREFIXE PARSING                                      */
+/*                       PREFIX PARSING                                      */
 /* ========================================================================== */
 
 // Extracts the nickname from a prefix.

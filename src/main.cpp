@@ -19,7 +19,7 @@ void setupSignalHandlers()
 {
 	struct sigaction sa;
 	
-	// Configuration pour SIGINT et SIGTERM
+	// Configuration for SIGINT and SIGTERM
 	sa.sa_handler = signalHandler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
@@ -41,7 +41,7 @@ void setupSignalHandlers()
 
 bool validateArguments(int argc, char** argv)
 {
-	// Vérifier le nombre d'arguments
+	// Check the number of arguments
 	if (argc != 3)
 	{
 		std::cerr << "Error: Invalid number of arguments" << std::endl;
@@ -50,7 +50,7 @@ bool validateArguments(int argc, char** argv)
 		return false;
 	}
 	
-	// Vérifier que le port est un nombre valide
+	// Check that the port is a valid number
 	std::string portStr = argv[1];
 	for (size_t i = 0; i < portStr.length(); i++)
 	{
@@ -61,7 +61,7 @@ bool validateArguments(int argc, char** argv)
 		}
 	}
 	
-	// Convertir et valider le port
+	// Convert and validate the port
 	long port = std::atol(argv[1]);
 	
 	if (port < 1 || port > 65535)
@@ -75,7 +75,7 @@ bool validateArguments(int argc, char** argv)
 		std::cerr << "Warning: Ports below 1024 require root privileges" << std::endl;
 	}
 	
-	// Vérifier que le password n'est pas vide
+	// Check that the password is not empty
 	std::string password = argv[2];
 	if (password.empty())
 	{
@@ -88,22 +88,22 @@ bool validateArguments(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	// 1. Valider les arguments
+	// 1. Validate the arguments
 	if (!validateArguments(argc, argv))
 		return 1;
 	
-	// 2. Parser les arguments
+	// 2. Parse the arguments
 	int port = std::atoi(argv[1]);
 	std::string password = argv[2];
 	
-	// 3. Configurer les gestionnaires de signaux
+	// 3. Setup signal handlers
 	setupSignalHandlers();
 	
-	// 4. Créer le serveur
+	// 4. Create the server
 	Server server(port, password);
-	g_server = &server;  // Pour le gestionnaire de signaux
+	g_server = &server;  // For the signal handler
 	
-	// 5. Initialiser le serveur
+	// 5. Initialize the server
 	if (!server.init())
 	{
 		std::cerr << "Failed to initialize server" << std::endl;
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 	
-	// 6. Afficher un message de démarrage
+	// 6. Display a startup message
 	std::cout << "========================================" << std::endl;
 	std::cout << "ft_irc server started successfully!" << std::endl;
 	std::cout << "Port: " << port << std::endl;
@@ -119,10 +119,10 @@ int main(int argc, char** argv)
 	std::cout << "Press Ctrl+C to stop the server" << std::endl;
 	std::cout << "========================================" << std::endl;
 	
-	// 7. Lancer la boucle principale
-	server.run();  // Bloque jusqu'à arrêt du serveur
+	// 7. Start the main loop
+	server.run();  // Blocks until the server stops
 	
-	// 8. Nettoyer et quitter
+	// 8. Clean up and exit
 	std::cout << "\n========================================" << std::endl;
 	std::cout << "Server stopped cleanly" << std::endl;
 	std::cout << "========================================" << std::endl;

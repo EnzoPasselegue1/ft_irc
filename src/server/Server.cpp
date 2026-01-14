@@ -380,7 +380,7 @@ void Server::handleClientData(int fd)
 	std::memset(buffer, 0, BUFFER_SIZE);
 	ssize_t bytesRead = recv(fd, buffer, BUFFER_SIZE - 1, 0);
 
-	if (bytesRead <= 0) // 0 = deconnexion , -1 = error
+	if (bytesRead <= 0) // 0 = diconnect , -1 = error
 	{
 	    client->markForDisconnection();
 	    return;
@@ -441,12 +441,11 @@ void Server::flushClientBuffer(int fd)
 	client->trimOutputBuffer(bytesSent);
 }
 
-//Add a fd in poll
 void Server::addToPoll(int fd)
 {
 	struct pollfd pfd;
 	pfd.fd = fd;
-	pfd.events = POLLIN;  // check data entrance
+	pfd.events = POLLIN;
 	pfd.revents = 0;
 	_pollFds.push_back(pfd);
 }
