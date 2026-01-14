@@ -163,7 +163,7 @@ void Server::run()
 	                flushClientBuffer(clientFd);
 	        }
 	    }
-	    //cleanupDisconnectedClients();
+        cleanupDisconnectedClients();
 	}
 }
 
@@ -460,5 +460,25 @@ void Server::removeFromPoll(int fd)
 	        break;
 	    }
 	}
+}
+
+void Server::cleanupDisconnectedClients()
+{
+    std::vector<int> fdsToRemove;
+    
+    for (std::map<int, Client*>::iterator it = _clients.begin();
+         it != _clients.end(); ++it)
+    {
+		if (it->second->isMarkedForDisconnection())
+        {
+            fdsToRemove.push_back(it->first);
+        }
+    }
+    
+    for (std::vector<int>::iterator it = fdsToRemove.begin();
+         it != fdsToRemove.end(); ++it)
+    {
+        disconnectClient(*it);
+    }
 }
 

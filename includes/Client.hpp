@@ -25,6 +25,7 @@ private:
 	bool        _passwordProvided;
 	bool        _registered;
 	bool        _shouldDisconnect;
+    bool        _markedForDisconnection;
 	
 	// Channels
 	std::set<std::string> _channels;
@@ -91,6 +92,7 @@ public:
     /* ========================================================================== */
     int getFd() const;
     void markForDisconnection();
+    bool isMarkedForDisconnection() const { return _markedForDisconnection; }
     bool shouldDisconnect() const;
 };
 

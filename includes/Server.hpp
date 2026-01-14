@@ -62,7 +62,7 @@ class Server
         void flushClientBuffer(int fd);
         void addToPoll(int fd);
         void removeFromPoll(int fd);
-
+        void cleanupDisconnectedClients();
 };
 
 #endif

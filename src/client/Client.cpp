@@ -12,7 +12,8 @@ Client::Client(int fd, const std::string& hostname)
 	  _hostname(hostname),
 	  _passwordProvided(false),
 	  _registered(false),
-	  _shouldDisconnect(false)
+	  _shouldDisconnect(false),
+      _markedForDisconnection(false)
 {
     std::cout << "Client created (fd: " << _fd << ")" << std::endl;
 }
@@ -192,3 +193,4 @@ bool Client::shouldDisconnect() const
 {
 	return _shouldDisconnect;
 }
+
