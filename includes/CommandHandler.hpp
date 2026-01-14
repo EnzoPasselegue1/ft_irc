@@ -43,7 +43,8 @@ class CommandHandler
         void handlePing(Client* client, const ParsedCommand& cmd);
         void handleQuit(Client* client, const ParsedCommand& cmd);
         void handleJoin(Client* client, const ParsedCommand& cmd);
-        void joinSingleChannel(Client* client, const std::string& channelName, const std::string& key);
+        void joinSingleChannel(Client* client, const std::string& channelName,
+                             const std::string& key);
         void handlePart(Client* client, const ParsedCommand& cmd);
         void handlePrivmsg(Client* client, const ParsedCommand& cmd);
 
@@ -65,8 +66,10 @@ class CommandHandler
 /* ========================================================================== */
 
         ParsedCommand parseCommand(const std::string& rawCommand);
-        void sendError(Client* client, const std::string& errorCode, const std::string& target, const std::string& message);
-        void sendReply(Client* client, const std::string& replyCode, const std::string& params, const std::string& message);
+        void sendError(Client* client, const std::string& errorCode,
+                     const std::string& target, const std::string& message);
+        void sendReply(Client* client, const std::string& replyCode,
+                     const std::string& params, const std::string& message);
         void sendWelcome(Client* client);
 
 };

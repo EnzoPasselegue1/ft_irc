@@ -9,18 +9,18 @@ namespace parser {
 /* ========================================================================== */
 /*                          MESSAGE PARSER IRC                                */
 /* ========================================================================== */
-std::string extractPrefix(const std::string& message);
-std::string extractCommand(const std::string& message);
-std::vector<std::string> extractParams(const std::string& message);
-std::string extractTrailing(const std::string& message);
+std::string                 extractPrefix(const std::string& message);
+std::string                 extractCommand(const std::string& message);
+std::vector<std::string>    extractParams(const std::string& message);
+std::string                 extractTrailing(const std::string& message);
 
 
 /* ========================================================================== */
 /*                    PARSING LISTES                                          */
 /* ========================================================================== */
-std::vector<std::string> parseChannelList(const std::string& channelList);
-std::vector<std::string> parseKeyList(const std::string& keyList);
-std::vector<std::string> parseTargetList(const std::string& targetList);
+std::vector<std::string>    parseChannelList(const std::string& channelList);
+std::vector<std::string>    parseKeyList(const std::string& keyList);
+std::vector<std::string>    parseTargetList(const std::string& targetList);
 
 /* ========================================================================== */
 /*                              PARSING MODE                                  */
@@ -37,16 +37,16 @@ struct ModeChange
 /* ========================================================================== */
 /*                          VALIDATION                                        */
 /* ========================================================================== */
-bool isValidChannelName(const std::string& name);
-bool isValidNickname(const std::string& nickname);
-bool isValidMode(char mode);
-bool modeNeedsParam(char mode, bool adding);
+bool                            isValidChannelName(const std::string& name);
+bool                            isValidNickname(const std::string& nickname);
+bool                            isValidMode(char mode);
+bool                            modeNeedsParam(char mode, bool adding);
         
 /* ========================================================================== */
-/*                       PREFIXE PARSING                                      */
+/*                       PARSING  PREFIX                                      */
 /* ========================================================================== */
-std::string getNickFromPrefix(const std::string& prefix);
-std::string getUserFromPrefix(const std::string& prefix);
-std::string getHostFromPrefix(const std::string& prefix);
+std::string                 getNickFromPrefix(const std::string& prefix);
+std::string                 getUserFromPrefix(const std::string& prefix);
+std::string                 getHostFromPrefix(const std::string& prefix);
 }
 #endif

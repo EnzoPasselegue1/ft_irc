@@ -6,7 +6,6 @@
 # include <map>
 # include <poll.h>
 
-// Forward declarations for circular inclusion
 class Client;
 class Channel;
 class CommandHandler;
@@ -39,30 +38,57 @@ class Server
         Server(int port, const std::string& password);
         ~Server();
 
-        bool init();
-        void run();
-        void stop();
-        void acceptNewClient();
-        void disconnectClient(int fd);
-        Client* getClientByNickname(const std::string& nickname);
-        bool isNicknameInUse(const std::string& nickname);
-        Channel* getOrCreatChannel(const std::string& name);
-        Channel* getChannel(const std::string& name);
-        Channel* removeChannel(const std::string& name);
-        void sendToClient(int fd, const std::string& message);
-        void broadcastToChannel(const std::string& channelName, const std::string& message, int excludeFd);
-        const std::string& getPassword() const;
-        const std::string& getServerName() const;
-        std::map<int, Client*>& getClients();
-        std::map<std::string, Channel*>& getChannels();
+        /* ========================================================================== */
+        /*                       INITIALIZATION SERVER                               */
+        /* ========================================================================== */
 
+        bool                                init();
 
-        void handleClientData(int fd);
-        void processCommand(Client* client, const std::string& command);
-        void flushClientBuffer(int fd);
-        void addToPoll(int fd);
-        void removeFromPoll(int fd);
-        void cleanupDisconnectedClients();
+        /* ========================================================================== */
+        /*                       MAIN LOOP                                            */
+        /* ========================================================================== */     
+        void                                run();
+        void                                stop();
+
+        /* ========================================================================== */
+        /*                       CONNECTION MANAGEMENT                                */
+        /* ========================================================================== */
+        void                                acceptNewClient();
+        void                                disconnectClient(int fd);
+        Client*                             getClientByNickname(const std::string& nickname);
+        bool                                isNicknameInUse(const std::string& nickname);
+
+        /* ========================================================================== */
+        /*                       CHANNEL MANAGEMENT                                    */
+        /* ========================================================================== */
+        Channel*                            getOrCreatChannel(const std::string& name);
+        Channel*                            getChannel(const std::string& name);
+        Channel*                            removeChannel(const std::string& name);
+
+        /* ========================================================================== */
+        /*                       COMMUNICATION                                       */
+        /* ========================================================================== */
+        void                                sendToClient(int fd, const std::string& message);
+        void                                broadcastToChannel(const std::string& channelName, 
+                                                    const std::string& message, int excludeFd);
+
+        /* ========================================================================== */
+        /*                       GETTEURS                                             */
+        /* ========================================================================== */
+        const   std::string&                getPassword() const;
+        const   std::string&                getServerName() const;
+        std::map<int, Client*>&             getClients();
+        std::map<std::string, Channel*>&    getChannels();
+
+        /* ========================================================================== */
+        /*                       PRIVATE METHODS                                      */
+        /* ========================================================================== */
+        void                                handleClientData(int fd);
+        void                                processCommand(Client* client, const std::string& command);
+        void                                flushClientBuffer(int fd);
+        void                                addToPoll(int fd);
+        void                                removeFromPoll(int fd);
+        void                                cleanupDisconnectedClients();
 };
 
 #endif

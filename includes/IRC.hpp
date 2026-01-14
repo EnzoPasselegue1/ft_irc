@@ -5,7 +5,7 @@
 /*                         STANDARD C++ LIBRARIES                         */
 /* ========================================================================== */
 
-// Conteneurs STL
+// Container STL
 # include <string>      // std::string for string manipulation
 # include <vector>      // std::vector for dynamic arrays
 # include <map>         // std::map for key-value associations
@@ -16,12 +16,12 @@
 # include <sstream>     // std::stringstream for string/number conversion
 # include <fstream>     // std::ifstream, std::ofstream for files
 
-// Utilitaires
+// Utilities
 # include <algorithm>   // std::find, std::remove, etc.
 # include <cstdlib>     // atoi, exit, etc.
-# include <cstring>     // memset, strlen (versions C++ de string.h)
-# include <cerrno>      // errno pour les codes d'erreur système
-# include <ctime>       // time() pour les timestamps
+# include <cstring>     // memset, strlen (C++ versions of string.h)
+# include <cerrno>      // errno for system error codes
+# include <ctime>       // time() for timestamps
 
 /* ========================================================================== */
 /*                        BIBLIOTHÈQUES SYSTÈME (POSIX)                       */
@@ -29,8 +29,8 @@
 
 // Sockets et réseau
 # include <sys/socket.h>    // socket(), bind(), listen(), accept(), send(), recv()
-# include <sys/types.h>     // Types de données système (size_t, ssize_t, etc.)
-# include <netinet/in.h>    // Structures sockaddr_in pour IPv4
+# include <sys/types.h>     // System data types (size_t, ssize_t, etc.)
+# include <netinet/in.h>    // sockaddr_in structures for IPv4
 # include <arpa/inet.h>     // inet_addr(), inet_ntoa(), htons(), ntohs()
 # include <netdb.h>         // getaddrinfo(), gethostbyname(), getprotobyname()
 
@@ -46,73 +46,73 @@
 # include <signal.h>        // signal(), sigaction() for handling Ctrl+C, etc.
 
 /* ========================================================================== */
-/*                           CONSTANTES DU PROJET                             */
+/*                           PROJECT CONSTANTS                                */
 /* ========================================================================== */
 
-// Configuration du serveur
-# define SERVER_NAME        "ft_irc"                // Nom affiché du serveur
-# define SERVER_VERSION     "1.0"                   // Version du serveur
-# define MAX_CLIENTS        100                     // Nombre max de clients simultanés
-# define MAX_CHANNELS       50                      // Nombre max de channels
-# define BUFFER_SIZE        512                     // Taille du buffer de réception (RFC 2812)
-# define MAX_NICK_LENGTH    9                       // Longueur max d'un nickname
-# define MAX_CHANNEL_LENGTH 50                      // Longueur max d'un nom de channel
-# define MAX_TOPIC_LENGTH   390                     // Longueur max d'un topic
+// Server configuration
+# define SERVER_NAME        "ft_irc"                // Server display name
+# define SERVER_VERSION     "1.0"                   // Server version
+# define MAX_CLIENTS        100                     // Maximum number of simultaneous clients
+# define MAX_CHANNELS       50                      // Maximum number of channels
+# define BUFFER_SIZE        512                     // Reception buffer size (RFC 2812)
+# define MAX_NICK_LENGTH    9                       // Maximum length of a nickname
+# define MAX_CHANNEL_LENGTH 50                      // Maximum length of a channel name
+# define MAX_TOPIC_LENGTH   390                     // Maximum length of a topic
 
-// Codes de retour
+// Return codes
 # define SUCCESS            0
 # define FAILURE            -1
 
-// Caractères spéciaux IRC
-# define CRLF               "\r\n"                  // Fin de ligne IRC (Carriage Return + Line Feed)
+// IRC special characters
+# define CRLF               "\r\n"                  // IRC line ending (Carriage Return + Line Feed)
 
 /* ========================================================================== */
-/*                    CODES DE RÉPONSE IRC (NUMERIC REPLIES)                  */
+/*                    IRC NUMERIC REPLIES                                     */
 /* ========================================================================== */
 
-// Réponses de bienvenue (connexion réussie)
-# define RPL_WELCOME        "001"   // Message de bienvenue après authentification
-# define RPL_YOURHOST       "002"   // Informations sur le serveur
-# define RPL_CREATED        "003"   // Date de création du serveur
-# define RPL_MYINFO         "004"   // Informations techniques du serveur
+// Respon valid (connexion réussie)
+# define RPL_WELCOME        "001"   // Welcome message after authentication
+# define RPL_YOURHOST       "002"   // Server information
+# define RPL_CREATED        "003"   // Server creation date
+# define RPL_MYINFO         "004"   // Server technical information
 
-// Réponses aux commandes
-#define RPL_ENDOFWHO        "315"   // Fin de la réponse WHO
-# define RPL_CHANNELMODEIS  "324"   // Mode actuel d'un channel
-# define RPL_NOTOPIC        "331"   // Pas de topic défini
-# define RPL_TOPIC          "332"   // Topic du channel
-# define RPL_TOPICWHOTIME   "333"   // Qui a défini le topic et quand
-# define RPL_INVITING       "341"   // Confirmation d'invitation
-# define RPL_WHOREPLY       "352"   // Réponse à la commande WHO
-# define RPL_NAMREPLY       "353"   // Liste des utilisateurs d'un channel
-# define RPL_ENDOFNAMES     "366"   // Fin de la liste des utilisateurs
+// Return codes for commands
+#define RPL_ENDOFWHO        "315"   // End of WHO response
+# define RPL_CHANNELMODEIS  "324"   // Current mode of a channel
+# define RPL_NOTOPIC        "331"   // No topic set
+# define RPL_TOPIC          "332"   // Channel topic
+# define RPL_TOPICWHOTIME   "333"   // Who set the topic and when
+# define RPL_INVITING       "341"   // Invitation confirmation
+# define RPL_WHOREPLY       "352"   // WHO command response
+# define RPL_NAMREPLY       "353"   // List of users in a channel
+# define RPL_ENDOFNAMES     "366"   // End of user list
 
-// Erreurs de commande
-# define ERR_NOSUCHNICK     "401"   // Nickname inexistant
-# define ERR_NOSUCHSERVER   "402"   // Serveur inexistant
-# define ERR_NOSUCHCHANNEL  "403"   // Channel inexistant
-# define ERR_CANNOTSENDTOCHAN "404" // Impossible d'envoyer au channel
-# define ERR_TOOMANYCHANNELS "405"  // Trop de channels joints
-# define ERR_NORECIPIENT    "411"   // Pas de destinataire
-# define ERR_NOTEXTTOSEND   "412"   // Pas de texte à envoyer
-# define ERR_UNKNOWNCOMMAND "421"   // Commande inconnue
-# define ERR_NONICKNAMEGIVEN "431"  // Pas de nickname fourni
-# define ERR_ERRONEUSNICKNAME "432" // Nickname invalide
-# define ERR_NICKNAMEINUSE  "433"   // Nickname déjà utilisé
-# define ERR_USERNOTINCHANNEL "441" // User pas dans le channel
-# define ERR_NOTONCHANNEL   "442"   // Vous n'êtes pas dans ce channel
-# define ERR_USERONCHANNEL  "443"   // User déjà dans le channel
-# define ERR_NOTREGISTERED  "451"   // Pas encore authentifié
-# define ERR_NEEDMOREPARAMS "461"   // Paramètres manquants
-# define ERR_ALREADYREGISTERED "462"// Déjà authentifié
-# define ERR_PASSWDMISMATCH "464"   // Mot de passe incorrect
-# define ERR_KEYSET         "467"   // Clé du channel déjà définie
-# define ERR_CHANNELISFULL  "471"   // Channel plein (limite atteinte)
-# define ERR_UNKNOWNMODE    "472"   // Mode inconnu
-# define ERR_INVITEONLYCHAN "473"   // Channel sur invitation uniquement
-# define ERR_BADCHANNELKEY  "475"   // Mauvaise clé de channel
-# define ERR_CHANOPRIVSNEEDED "482" // Privilèges opérateur requis
-# define ERR_UMODEUNKNOWNFLAG "501" // Flag de mode inconnu
+// Command errors
+# define ERR_NOSUCHNICK     "401"   // Nickname does not exist
+# define ERR_NOSUCHSERVER   "402"   // Server does not exist
+# define ERR_NOSUCHCHANNEL  "403"   // Channel does not exist
+# define ERR_CANNOTSENDTOCHAN "404" // Cannot send to channel
+# define ERR_TOOMANYCHANNELS "405"  // Too many channels joined
+# define ERR_NORECIPIENT    "411"   // No recipient
+# define ERR_NOTEXTTOSEND   "412"   // No text to send
+# define ERR_UNKNOWNCOMMAND "421"   // Unknown command
+# define ERR_NONICKNAMEGIVEN "431"  // No nickname given
+# define ERR_ERRONEUSNICKNAME "432" // Invalid nickname
+# define ERR_NICKNAMEINUSE  "433"   // Nickname already in use
+# define ERR_USERNOTINCHANNEL "441" // User not in channel
+# define ERR_NOTONCHANNEL   "442"   // You are not on that channel
+# define ERR_USERONCHANNEL  "443"   // User already in channel
+# define ERR_NOTREGISTERED  "451"   // Not registered
+# define ERR_NEEDMOREPARAMS "461"   // Missing parameters
+# define ERR_ALREADYREGISTERED "462"// Already registered
+# define ERR_PASSWDMISMATCH "464"   // Incorrect password
+# define ERR_KEYSET         "467"   // Channel key already set
+# define ERR_CHANNELISFULL  "471"   // Channel full (limit reached)
+# define ERR_UNKNOWNMODE    "472"   // Unknown mode
+# define ERR_INVITEONLYCHAN "473"   // Invite-only channel
+# define ERR_BADCHANNELKEY  "475"   // Bad channel key
+# define ERR_CHANOPRIVSNEEDED "482" // Operator privileges needed
+# define ERR_UMODEUNKNOWNFLAG "501" // Unknown mode flag
 
 /* ========================================================================== */
 /*                          FORWARD DECLARATIONS                              */

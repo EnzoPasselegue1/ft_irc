@@ -1,5 +1,8 @@
 #include "IRC.hpp"
 
+/* ========================================================================== */
+/*                       CONSTRUCTOR                                          */
+/* ========================================================================== */
 
 Server::Server(int port, const std::string& password)
 	: _port(port),
@@ -41,7 +44,7 @@ Server::~Server()
 }
 
 /* ========================================================================== */
-/*                       INITIALISATION SERVEUR                               */
+/*                       INITIALIZATION SERVER                               */
 /* ========================================================================== */
 
 /*
@@ -80,8 +83,8 @@ bool Server::init()
 	struct sockaddr_in serverAddr;
 	std::memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;           // IPv4
-	serverAddr.sin_addr.s_addr = INADDR_ANY;   // Accepte toutes les interfaces
-	serverAddr.sin_port = htons(_port);        // Port en network byte order
+	serverAddr.sin_addr.s_addr = INADDR_ANY;   // Accept all interfaces
+	serverAddr.sin_port = htons(_port);        // Port in network byte order
 
 	if (bind(_serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) == -1)
 	{
@@ -103,7 +106,7 @@ bool Server::init()
 }
 
 /* ========================================================================== */
-/*                       PRINCIPALE  WHILE                                    */
+/*                       MAIN LOOP                                            */
 /* ========================================================================== */
 
 // 1. Call poll() with a timeout (e.g., 1000ms)
@@ -173,7 +176,7 @@ void Server::stop()
 }
 
 /* ========================================================================== */
-/*                       GESTION  CONNEXIONS                                  */
+/*                       CONNECTION MANAGEMENT                                */
 /* ========================================================================== */
 
 //accept new client if it's possble
@@ -259,7 +262,7 @@ bool Server::isNicknameInUse(const std::string& nickname)
 }
 
 /* ========================================================================== */
-/*                       CHANNEL GESTION                                      */
+/*                       CHANNEL MANAGEMENT                                    */
 /* ========================================================================== */
 
 Channel* Server::getOrCreatChannel(const std::string& name)
@@ -302,7 +305,7 @@ Channel* Server::removeChannel(const std::string& name)
 
 
 /* ========================================================================== */
-/*                       COIMMUNICATION                                       */
+/*                       COMMUNICATION                                       */
 /* ========================================================================== */
 
 void Server::sendToClient(int fd, const std::string& message)
@@ -363,7 +366,7 @@ std::map<std::string, Channel*>& Server::getChannels()
 }
 
 /* ========================================================================== */
-/*                       PRIVATE METHODE                                      */
+/*                       PRIVATE METHODS                                      */
 /* ========================================================================== */
 
 void Server::handleClientData(int fd)
