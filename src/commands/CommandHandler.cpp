@@ -55,10 +55,10 @@ void CommandHandler::handleCommand(Client* client, const std::string& rawCommand
 	    handleQuit(client, cmd);
 	else if (upperCmd == "PING")
 	    handlePing(client, cmd);
-	//else if (upperCmd == "CAP")
-	//    ; // Ignorer CAP (utilisé par certains clients modernes)
-	//else if (upperCmd == "WHO" || upperCmd == "WHOIS")
-	//    ; // Optionnel : implémenter WHO/WHOIS
+    else if (upperCmd == "CAP")
+        return ;
+    else if (upperCmd == "WHO" || upperCmd == "WHOIS" || upperCmd == "WHOWAS")
+        handleWho(client, cmd);
 	else
 	    sendError(client, ERR_UNKNOWNCOMMAND, upperCmd, "Unknown command");
 }
@@ -68,7 +68,6 @@ ParsedCommand CommandHandler::parseCommand(const std::string& rawCommand)
 	ParsedCommand cmd;
 	std::string line = rawCommand;
 
-	// 1. Extraire le préfixe (optionnel, commence par ':')
 	if (!line.empty() && line[0] == ':')
 	{
 	    size_t spacePos = line.find(' ');

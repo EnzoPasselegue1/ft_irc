@@ -77,11 +77,13 @@
 # define RPL_MYINFO         "004"   // Informations techniques du serveur
 
 // Réponses aux commandes
+#define RPL_ENDOFWHO        "315"   // Fin de la réponse WHO
 # define RPL_CHANNELMODEIS  "324"   // Mode actuel d'un channel
 # define RPL_NOTOPIC        "331"   // Pas de topic défini
 # define RPL_TOPIC          "332"   // Topic du channel
 # define RPL_TOPICWHOTIME   "333"   // Qui a défini le topic et quand
 # define RPL_INVITING       "341"   // Confirmation d'invitation
+# define RPL_WHOREPLY       "352"   // Réponse à la commande WHO
 # define RPL_NAMREPLY       "353"   // Liste des utilisateurs d'un channel
 # define RPL_ENDOFNAMES     "366"   // Fin de la liste des utilisateurs
 
@@ -112,7 +114,6 @@
 # define ERR_CHANOPRIVSNEEDED "482" // Privilèges opérateur requis
 # define ERR_UMODEUNKNOWNFLAG "501" // Flag de mode inconnu
 
-
 /* ========================================================================== */
 /*                          FORWARD DECLARATIONS                              */
 /* ========================================================================== */
@@ -121,7 +122,6 @@ class Client;
 class Channel;
 class Server;
 class CommandHandler;
-
 
 /* ========================================================================== */
 /*                        HEADERS OF PROJECT IRC                              */

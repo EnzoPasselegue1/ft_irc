@@ -21,6 +21,7 @@ class CommandHandler
     private:
         Server& _server;
         void handlePass(Client* client, const ParsedCommand& cmd);
+        void sendWhoReply(Client* client, Channel* channel, Client* targetClient);
     
 
     public:
@@ -57,6 +58,7 @@ class CommandHandler
         void applyModeChanges(Client* client, Channel* channel,
                               const std::string& modeString,
                               const std::vector<std::string>& modeParams);
+        void handleWho(Client* client, const ParsedCommand& cmd);
 
 /* ========================================================================== */
 /*                         UTILS                                              */
