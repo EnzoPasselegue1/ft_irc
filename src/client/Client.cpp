@@ -68,7 +68,7 @@ std::string Client::getPrefix() const
 }
 
 /* ========================================================================== */
-/*                   ÉTAT D'AUTHENTIFICATION                                  */
+/*                   STAT AUTHENTIFICATION                                 */
 /* ========================================================================== */
 
 // Set whether the client has provided a password.
@@ -96,7 +96,7 @@ void Client::setRegistered(bool value)
 }
 
 /* ========================================================================== */
-/*                    GESTION DES CHANNELS                                    */
+/*                    CHANNELS MANAGEMENT                                    */
 /* ========================================================================== */
     
 // Add the client to a channel.
@@ -124,7 +124,7 @@ const std::set<std::string>& Client::getChannels() const
 }
 
 /* ========================================================================== */
-/*                    GESTION DES BUFFERS                                     */
+/*                    BUFFERS MANAGEMENT                                     */
 /* ========================================================================== */
 
 // Append data to the client's input buffer.

@@ -12,7 +12,6 @@ void CommandHandler::handleMode(Client* client, const ParsedCommand& cmd)
 
     if (target[0] != '#' && target[0] != '&')
     { 
-        // User mode handling can be implemented here
         sendError(client, ERR_UMODEUNKNOWNFLAG, target, "Unknown user mode flag");
         return;
     }

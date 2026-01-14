@@ -1,7 +1,7 @@
 #include "IRC.hpp"
 
 /* ========================================================================== */
-/*                    CONSTRUCTEUR / DESTRUCTEUR                              */
+/*                    CONSTRUCTOR / DESTRUCTOR                              */
 /* ========================================================================== */
 
 // Constructor initializing the channel with a name and default values for other attributes.
@@ -19,7 +19,7 @@ Channel::Channel(const std::string& name)
 Channel::~Channel() {}
 
 /* ========================================================================== */
-/*                    GESTION DES MEMBRES                                     */
+/*                    MEMBERS MANAGEMENT                                     */
 /* ========================================================================== */
 
 // Add a member to the channel. Returns true if the member was added, false if they were already a member.
@@ -88,7 +88,7 @@ bool Channel::isEmpty() const
 }
 
 /* ========================================================================== */
-/*                    GESTION DES OPÉRATEURS                                  */
+/*                    OPERATORS MANAGEMENT                                  */
 /* ========================================================================== */
 
 // Add an operator to the channel. Returns true if the operator was added, false if the client is not a member.
@@ -128,10 +128,8 @@ bool Channel::isOperator(const std::string& nickname) const
 }
 
 /* ========================================================================== */
-/*                    GESTION DES MODES                                       */
+/*                    MODES MANAGEMENT                                       */
 /* ========================================================================== */
-
-/* --- Mode i : Invite-only --- */
 
 void Channel::setInviteOnly(bool enabled)
 {
@@ -143,8 +141,6 @@ bool Channel::isInviteOnly() const
 	return _inviteOnly;
 }
 
-/* --- Mode t : Topic protégé --- */
-
 void Channel::setTopicRestricted(bool enabled)
 {
 	_topicRestricted = enabled;
@@ -154,8 +150,6 @@ bool Channel::isTopicRestricted() const
 {
 	return _topicRestricted;
 }
-
-/* --- Mode k : Channel key (password) --- */
 
 void Channel::setKey(const std::string& key)
 {
@@ -177,7 +171,6 @@ bool Channel::checkKey(const std::string& key) const
 	return _key == key;
 }
 
-/* --- Mode l : Limite d'utilisateurs --- */
 
 void Channel::setUserLimit(size_t limit)
 {
@@ -201,7 +194,6 @@ bool Channel::isFull() const
 	return _members.size() >= _userLimit;
 }
 
-/* --- Génération de la chaîne de modes --- */
 
 std::string Channel::getModeString() const
 {
@@ -235,7 +227,7 @@ std::string Channel::getModeStringWithParams() const
 }
 
 /* ========================================================================== */
-/*                    GESTION DU TOPIC                                        */
+/*                    TOPIC MANAGEMENT                                        */
 /* ========================================================================== */
 
 // Set the topic of the channel along with the setter's nickname and the current timestamp.
@@ -273,7 +265,7 @@ time_t Channel::getTopicTime() const
 }
 
 /* ========================================================================== */
-/*                    GESTION DES INVITATIONS                                 */
+/*                    INVITATIONS MANAGEMENT                                  */
 /* ========================================================================== */
 
 void Channel::addInvite(const std::string& nickname)

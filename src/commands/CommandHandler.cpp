@@ -21,8 +21,6 @@ void CommandHandler::handleCommand(Client* client, const std::string& rawCommand
 
 	std::string upperCmd = Utils::toUpper(cmd.command);
 
-	//    PASS, NICK, USER, QUIT ne nécessitent pas d'être enregistré
-	//    Les autres commandes nécessitent l'enregistrement
 	if (!client->isRegistered() &&
 	    upperCmd != "PASS" && upperCmd != "NICK" &&
 	    upperCmd != "USER" && upperCmd != "QUIT" && upperCmd != "CAP")
@@ -83,7 +81,7 @@ ParsedCommand CommandHandler::parseCommand(const std::string& rawCommand)
 	    }
 	}
 
-	// 2. Trouver le trailing (partie après " :")
+	// Find the trailing (part after " :")
 	std::string trailing;
 	size_t trailingPos = line.find(" :");
 	if (trailingPos != std::string::npos)
@@ -92,7 +90,7 @@ ParsedCommand CommandHandler::parseCommand(const std::string& rawCommand)
 	    line = line.substr(0, trailingPos);
 	}
 
-	// 3. Extraire la commande et les paramètres
+	// Extract the command and parameters
 	std::vector<std::string> parts = Utils::split(line, ' ');
 	if (!parts.empty())
 	{
@@ -104,7 +102,7 @@ ParsedCommand CommandHandler::parseCommand(const std::string& rawCommand)
 	    }
 	}
 
-	// 4. Ajouter le trailing comme dernier paramètre
+	// Add the trailing as the last parameter
 	if (!trailing.empty())
 	    cmd.params.push_back(trailing);
 
