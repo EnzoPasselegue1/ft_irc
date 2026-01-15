@@ -24,8 +24,7 @@ ft_irc/
 └── src/                     # Sources (.cpp)
     ├── main.cpp             # Point d'entrée
     ├── server/
-    │   ├── Server.cpp       # Implémentation serveur
-    │   └── Socket.cpp       # Utilitaires socket (optionnel)
+    │   └── Server.cpp       # Implémentation serveur
     ├── client/
     │   └── Client.cpp       # Implémentation client
     ├── channel/
