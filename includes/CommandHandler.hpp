@@ -47,6 +47,7 @@ class CommandHandler
                              const std::string& key);
         void handlePart(Client* client, const ParsedCommand& cmd);
         void handlePrivmsg(Client* client, const ParsedCommand& cmd);
+        void handleNotice(Client* client, const ParsedCommand& cmd);
 
 /* ========================================================================== */
 /*                         OPERATOR COMMANDS                                  */
