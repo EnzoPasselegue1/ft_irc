@@ -20,7 +20,7 @@ void CommandHandler::handlePrivmsg(Client* client, const ParsedCommand& cmd)
 
 	std::string fullMsg = ":" + client->getPrefix() + " PRIVMSG " + target + " :" + message;
 
-	if (target[0] == '#' || target[0] == '&' || target[0] != '+' || target[0] != '!')
+	if (target[0] == '#' || target[0] == '&' || target[0] == '+' || target[0] == '!')
 	{
 	    Channel* channel = _server.getChannel(target);
 	    if (!channel)
