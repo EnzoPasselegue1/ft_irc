@@ -28,14 +28,16 @@ SRC_COMMANDS =	$(SRC_DIR)/commands/CommandHandler.cpp \
 				$(SRC_DIR)/commands/Quit.cpp \
 				$(SRC_DIR)/commands/Ping.cpp \
 				$(SRC_DIR)/commands/Who.cpp	\
-				$(SRC_DIR)/commands/Notice.cpp
+				$(SRC_DIR)/commands/Notice.cpp	\
 
 SRC_UTILS =		$(SRC_DIR)/utils/Utils.cpp \
 				$(SRC_DIR)/utils/Parser.cpp
 
 SRC_MAIN =		$(SRC_DIR)/main.cpp
 
-SRCS = $(SRC_MAIN) $(SRC_SERVER) $(SRC_CLIENT) $(SRC_CHANNEL) $(SRC_COMMANDS) $(SRC_UTILS)
+SRC_BONUS =		$(SRC_DIR)/bonus/Bot.cpp
+
+SRCS = $(SRC_MAIN) $(SRC_SERVER) $(SRC_CLIENT) $(SRC_CHANNEL) $(SRC_COMMANDS) $(SRC_UTILS) $(SRC_BONUS)
 
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
