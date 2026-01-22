@@ -2,10 +2,27 @@
 
 void CommandHandler::handleBot(Client* client, const ParsedCommand& cmd)
 {
-    std::string botMessage = "Hello " + client->getNickname() + "! I am your friendly IRC bot.";
-    std::string fullMsg = ":" + _server.getServerName() + " NOTICE " + client->getNickname() + " :" + botMessage;
+    if (cmd.params.empty())
+    {
+        sendError(client, ERR_NEEDMOREPARAMS, "BOT", "Need more parameters");
+        return;
+    }
 
-    _server.sendToClient(client->getFd(), fullMsg);
+    std::string subject;
+    for (size_t i = 0; i < cmd.params.size(); ++i)
+    {
+        if (i)
+            subject += " ";
+        subject += cmd.params[i];
+    }
 
-    (void)cmd; // To avoid unused parameter warning
+    long score = 0;
+    for (size_t i = 0; i < subject.size(); ++i)
+        score += static_cast<unsigned char>(subject[i]);
+
+    std::string verdict = (score % 2) ? "c'est de droite." : "c'est de gauche.";
+    std::string reply = ":" + _server.getServerName() + " NOTICE "
+                      + client->getNickname() + " :" + verdict;
+
+    _server.sendToClient(client->getFd(), reply);
 }
