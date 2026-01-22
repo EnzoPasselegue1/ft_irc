@@ -8,10 +8,37 @@ void CommandHandler::handleBot(Client* client, const ParsedCommand& cmd)
         return;
     }
 
+    std::string target;
     std::string subject;
-    for (size_t i = 0; i < cmd.params.size(); ++i)
+    size_t paramStartIndex = 0;
+
+    if (cmd.params[0][0] == '#' || cmd.params[0][0] == '&' || cmd.params[0][0] == '+' || cmd.params[0][0] == '!')
     {
-        if (i)
+        target = cmd.params[0];
+        paramStartIndex = 1;
+
+        Channel* channel = _server.getChannel(target);
+        if (!channel)
+        {
+            sendError(client, ERR_NOSUCHCHANNEL, target, "No such channel");
+            return;
+        }
+        if (!channel->isMember(client))
+        {
+            sendError(client, ERR_CANNOTSENDTOCHAN, target, "Cannot send to channel");
+            return;
+        }
+        if (cmd.params.size() <= 1)
+        {
+            sendError(client, ERR_NEEDMOREPARAMS, "BOT", "Need more parameters");
+            return;
+        }
+
+    }
+
+    for (size_t i = paramStartIndex; i < cmd.params.size(); ++i)
+    {
+        if (i > paramStartIndex)
             subject += " ";
         subject += cmd.params[i];
     }
@@ -21,8 +48,17 @@ void CommandHandler::handleBot(Client* client, const ParsedCommand& cmd)
         score += static_cast<unsigned char>(subject[i]);
 
     std::string verdict = (score % 2) ? "c'est de droite." : "c'est de gauche.";
-    std::string reply = ":" + _server.getServerName() + " NOTICE "
-                      + client->getNickname() + " :" + verdict;
 
-    _server.sendToClient(client->getFd(), reply);
+    if (!target.empty())
+    {
+        std::string reply = ":" + _server.getServerName() + " NOTICE "
+                          + client->getNickname() + " :" + verdict;
+        _server.sendToClient(client->getFd(), reply);
+    }
+    else
+    {
+        std::string reply = ":" + _server.getServerName() + " NOTICE "
+                          + target + " :" + verdict;
+        _server.broadcastToChannel(target, reply, -1);
+    }
 }
