@@ -1,132 +1,64 @@
 # ft_irc - Internet Relay Chat Server
 
-## Vue d'ensemble du projet
+*This project has been created as part of the 42 curriculum by scottene and enpassel.*
 
-Ce projet consiste à implémenter un serveur IRC (Internet Relay Chat) en C++98.
-Le serveur doit être capable de gérer plusieurs clients simultanément et de
-supporter les fonctionnalités de base d'IRC.
+## Description
 
-## Architecture du projet
+ft_irc is a custom implementation of an IRC (Internet Relay Chat) server written in C++98. The project demonstrates network programming concepts, socket management, and the IRC protocol implementation. The server handles multiple simultaneous client connections using non-blocking I/O and the `poll()` system call, supporting essential IRC commands and channel operations.
 
-```
-ft_irc/
-├── Makefile                 # Compilation du projet
-├── README.md                # Ce fichier
-├── includes/                # Headers (.hpp)
-│   ├── IRC.hpp              # Header principal (includes + constantes)
-│   ├── Server.hpp           # Classe serveur
-│   ├── Client.hpp           # Classe client
-│   ├── Channel.hpp          # Classe channel
-│   ├── CommandHandler.hpp   # Gestionnaire de commandes
-│   ├── Utils.hpp            # Fonctions utilitaires
-│   └── Parser.hpp           # Parsing IRC
-│
-└── src/                     # Sources (.cpp)
-    ├── main.cpp             # Point d'entrée
-    ├── server/
-    │   └── Server.cpp       # Implémentation serveur
-    ├── client/
-    │   └── Client.cpp       # Implémentation client
-    ├── channel/
-    │   └── Channel.cpp      # Implémentation channel
-    ├── commands/
-    │   ├── CommandHandler.cpp  # Dispatcher de commandes
-    │   ├── Pass.cpp         # Commande PASS
-    │   ├── Nick.cpp         # Commande NICK
-    │   ├── User.cpp         # Commande USER
-    │   ├── Join.cpp         # Commande JOIN
-    │   ├── Part.cpp         # Commande PART
-    │   ├── Privmsg.cpp      # Commande PRIVMSG
-    │   ├── Kick.cpp         # Commande KICK
-    │   ├── Invite.cpp       # Commande INVITE
-    │   ├── Topic.cpp        # Commande TOPIC
-    │   ├── Mode.cpp         # Commande MODE
-    │   ├── Quit.cpp         # Commande QUIT
-    │   └── Ping.cpp         # Commande PING
-    └── utils/
-        ├── Utils.cpp        # Fonctions utilitaires
-        └── Parser.cpp       # Parsing IRC
-```
+Key features include:
+- Multi-client connection handling with non-blocking sockets
+- User authentication and registration (PASS, NICK, USER)
+- Channel management (JOIN, PART, KICK, INVITE)
+- Private and channel messaging (PRIVMSG, NOTICE)
+- Channel modes: invite-only (+i), topic restrictions (+t), password protection (+k), user limits (+l), operator privileges (+o)
+- Topic management with operator controls
+- Information queries (WHO, WHOIS, LIST, NAMES)
+- Graceful server shutdown with signal handling
 
-## Ordre de développement recommandé
+## Instructions
 
-### Phase 1 : Fondations (Utils et parsing)
-1. **Utils.cpp** - Implémenter les fonctions de base
-   - `trim()`, `split()`, `toLower()`, `toUpper()`
-   - `intToString()`, `stringToInt()`
-   - Tester chaque fonction individuellement
-
-2. **Parser.cpp** - Implémenter le parsing IRC
-   - `parseChannelList()`, `parseKeyList()`
-   - `isValidChannelName()`, `isValidNickname()`
-
-### Phase 2 : Classes de base (Client, Channel)
-3. **Client.cpp** - Implémenter la classe Client
-   - Constructeur, getters, setters
-   - Gestion des buffers
-   - Gestion des channels
-
-4. **Channel.cpp** - Implémenter la classe Channel
-   - Gestion des membres
-   - Gestion des opérateurs
-   - Gestion des modes (i, t, k, l)
-   - Gestion du topic
-
-### Phase 3 : Serveur et réseau
-5. **Server.cpp** - Implémenter le serveur
-   - `init()` : création du socket, bind, listen
-   - `run()` : boucle principale avec poll()
-   - `acceptNewClient()` : accepter les connexions
-   - `handleClientData()` : lecture des données
-   - `sendToClient()`, `broadcastToChannel()`
-   - `disconnectClient()` : déconnexion propre
-
-6. **main.cpp** - Point d'entrée
-   - Validation des arguments
-   - Gestion des signaux
-   - Création et lancement du serveur
-
-### Phase 4 : Commandes d'authentification
-7. **Pass.cpp** - Commande PASS
-8. **Nick.cpp** - Commande NICK
-9. **User.cpp** - Commande USER
-
-À ce stade, tu devrais pouvoir te connecter avec un client IRC !
-
-### Phase 5 : Commandes de base
-10. **Ping.cpp** - Commande PING (simple)
-11. **Quit.cpp** - Commande QUIT
-12. **Join.cpp** - Commande JOIN
-13. **Part.cpp** - Commande PART
-14. **Privmsg.cpp** - Commande PRIVMSG
-
-### Phase 6 : Commandes opérateur
-15. **Topic.cpp** - Commande TOPIC
-16. **Kick.cpp** - Commande KICK
-17. **Invite.cpp** - Commande INVITE
-18. **Mode.cpp** - Commande MODE (la plus complexe)
-
-## Compilation
+### Compilation
 
 ```bash
-make        # Compile le projet
-make clean  # Supprime les fichiers objets
-make fclean # Supprime tout (objets + exécutable)
-make re     # Recompile tout
+make
 ```
 
-## Utilisation
+This will compile the project and generate the `ircserv` executable.
+
+Additional Makefile targets:
+- `make clean` - Remove object files
+- `make fclean` - Remove object files and executable
+- `make re` - Rebuild the project from scratch
+
+### Execution
 
 ```bash
 ./ircserv <port> <password>
+```
 
-# Exemple
+**Parameters:**
+- `port` - Port number for the server to listen on (1-65535, ports below 1024 require root)
+- `password` - Server password required for client connections
+
+**Example:**
+```bash
 ./ircserv 6667 mypassword
 ```
 
-## Tests
+The server will start and display:
+```
+========================================
+ft_irc server started successfully!
+Port: 6667
+Server name: ft_irc
+Press Ctrl+C to stop the server
+========================================
+```
 
-### Test avec netcat
+### Connecting with IRC Clients
+
+#### Using netcat (for testing)
 ```bash
 nc -C 127.0.0.1 6667
 PASS mypassword
@@ -137,43 +69,157 @@ PRIVMSG #test :Hello World!
 QUIT
 ```
 
-### Test avec irssi
+#### Using other IRC clients
+Configure your IRC client with:
+- **Server:** 127.0.0.1 (or localhost)
+- **Port:** 6667 (or your chosen port)
+- **Password:** Your server password
+
+Recommended IRC clients for testing:
+- **HexChat** (GUI) - `apt install hexchat`
+
+### Testing
+
+The project includes comprehensive test suites:
+
+1. **Unit Tests:**
 ```bash
-irssi -c 127.0.0.1 -p 6667 -w mypassword
+# Test individual components
+make -C mains
+./mains/test_utils
+./mains/test_parser
+./mains/test_client
+./mains/test_channel
+./mains/test_server
 ```
 
-### Test avec HexChat/WeeChat
-Configurer le serveur avec :
-- Adresse : 127.0.0.1
-- Port : 6667
-- Mot de passe : mypassword
+2. **Integration Tests:**
+```bash
+# Automated IRC protocol tests
+./message.sh
 
-## Clients IRC recommandés pour les tests
+# Python-based functional tests
+python3 ircTest.py
+```
 
-1. **irssi** (terminal) - `apt install irssi`
-2. **WeeChat** (terminal) - `apt install weechat`
-3. **HexChat** (GUI) - `apt install hexchat`
-4. **LimeChat** (macOS)
+## Project Structure
 
-## Ressources utiles
+```
+ft_irc/
+├── Makefile
+├── README.md
+├── includes/              # Header files
+│   ├── IRC.hpp           # Main header with includes and constants
+│   ├── Server.hpp        # Server class
+│   ├── Client.hpp        # Client class
+│   ├── Channel.hpp       # Channel class
+│   ├── CommandHandler.hpp
+│   ├── Utils.hpp
+│   └── Parser.hpp
+└── src/                  # Source files
+    ├── main.cpp
+    ├── server/
+    │   └── Server.cpp
+    ├── client/
+    │   └── Client.cpp
+    ├── channel/
+    │   └── Channel.cpp
+    ├── commands/         # IRC command implementations
+    │   ├── CommandHandler.cpp
+    │   ├── Pass.cpp
+    │   ├── Nick.cpp
+    │   ├── User.cpp
+    │   ├── Join.cpp
+    │   ├── Part.cpp
+    │   ├── Privmsg.cpp
+    │   ├── Notice.cpp
+    │   ├── Kick.cpp
+    │   ├── Invite.cpp
+    │   ├── Topic.cpp
+    │   ├── Mode.cpp
+    │   ├── Quit.cpp
+    │   ├── Ping.cpp
+    │   ├── Who.cpp
+    │   ├── Names.cpp
+    │   └── List.cpp
+    ├── utils/
+    │   ├── Utils.cpp
+    │   └── Parser.cpp
+    └── bonus/
+        └── Bot.cpp       # Bonus bot feature
+```
 
-- [RFC 2812](https://tools.ietf.org/html/rfc2812) - IRC Protocol
-- [RFC 1459](https://tools.ietf.org/html/rfc1459) - IRC Original
-- [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/)
-- [Modern IRC Client Protocol](https://modern.ircdocs.horse/)
+## Supported IRC Commands
 
-## Conseils de développement
+### Authentication
+- **PASS** - Authenticate with server password
+- **NICK** - Set or change nickname
+- **USER** - Set username and realname
+- **QUIT** - Disconnect from server
 
-1. **Compiler souvent** : Compile après chaque fonction implémentée
-2. **Tester progressivement** : Teste chaque commande individuellement
-3. **Utiliser les logs** : Ajoute des std::cout pour débugger
-4. **Lire les RFCs** : Les messages d'erreur sont standardisés
-5. **Utiliser netcat** : Parfait pour envoyer des commandes brutes
+### Channel Operations
+- **JOIN** - Join one or more channels
+- **PART** - Leave one or more channels
+- **KICK** - Remove a user from a channel (operators only)
+- **INVITE** - Invite a user to a channel (operators only)
+- **TOPIC** - View or set channel topic
+- **MODE** - View or change channel modes (operators only)
 
-## Points d'attention
+### Messaging
+- **PRIVMSG** - Send private message to user or channel
+- **NOTICE** - Send notice to user or channel
 
-- **Non-bloquant** : Tous les sockets doivent être non-bloquants
-- **poll()** : Une seule instance pour gérer tous les fd
-- **Buffers** : Gérer les commandes fragmentées (partial data)
-- **CRLF** : Les messages IRC se terminent par `\r\n`
-- **Majuscules** : Les commandes sont insensibles à la casse
+### Information Queries
+- **WHO** - List users in a channel
+- **LIST** - List available channels
+- **NAMES** - List users in specific channels
+
+### Server
+- **PING** - Keep-alive check
+
+### Bonus
+- **BOT** - Simple bot command for entertainment
+
+## Channel Modes
+
+- **+i** (invite-only) - Channel requires invitation to join
+- **+t** (topic restricted) - Only operators can change topic
+- **+k** (key) - Channel requires password to join
+- **+l** (limit) - Limit the number of users in channel
+- **+o** (operator) - Give/take channel operator privileges
+
+## Resources
+
+### IRC Protocol Documentation
+- [RFC 2812 - Internet Relay Chat: Client Protocol](https://tools.ietf.org/html/rfc2812) - Current IRC protocol specification
+- [RFC 1459 - Internet Relay Chat Protocol](https://tools.ietf.org/html/rfc1459) - Original IRC protocol specification
+- [Modern IRC Client Protocol](https://modern.ircdocs.horse/) - Updated IRC documentation with modern conventions
+
+### Network Programming
+- [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/) - Comprehensive guide to socket programming in C
+- [TCP/IP Sockets in C: Practical Guide for Programmers](https://cs.baylor.edu/~donahoo/practical/CSockets/practical/) - Socket programming reference
+
+### C++ Resources
+- [C++ Reference](https://en.cppreference.com/) - C++ standard library documentation
+- [C++98 Standard](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/1998/n1905.pdf) - Official C++98 standard document
+
+## Technical Choices
+
+### Non-blocking I/O with poll()
+The server uses `poll()` for I/O multiplexing instead of `select()` or `epoll()` as required by the subject. This allows efficient handling of multiple client connections without threading.
+
+### Case-insensitive Comparison
+Nicknames and channel names are stored in lowercase internally to ensure case-insensitive comparison, complying with IRC protocol standards.
+
+### Buffer Management
+Separate input and output buffers for each client handle partial reads/writes and ensure messages are properly assembled before processing.
+
+### Signal Handling
+Proper signal handling (SIGINT, SIGTERM) ensures graceful server shutdown with cleanup of all resources.
+
+### C++98 Compliance
+The project strictly adheres to C++98 standard, avoiding C++11 features like smart pointers, lambda functions, or move semantics.
+
+## Author
+
+Created by scottene and enpassel as part of the 42 École curriculum in Lyon, France.
